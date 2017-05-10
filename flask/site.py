@@ -2,6 +2,10 @@ import re
 from flask import Flask
 from flask import url_for, render_template, request, redirect
 from pymystem3 import Mystem
+import json
+import requests
+from collections import Counter, defaultdict
+
 
 m = Mystem()
 app = Flask(__name__)
@@ -16,40 +20,114 @@ def add_POS(text):
     sov=0
     per=0
     neper=0
+    d = defaultdict(int)
     for i in ana:
         result += i['text']
         if i['text'].strip() and 'analysis' in i and i['analysis']:
             pos = i['analysis'][0]['gr'].split('=')[0].split(',')[0]
             count+=1
+            d['все слова']+=1
             if pos == 'V':
                 j+=1
+                d['глаголы']+=1
             verb = i['analysis'][0]['gr'].split(',')
             for v in verb:
                 if v == 'несов':
                     nesov+=1
+                    d['несовершенный вид']+=1
                 elif v == 'сов':
                     sov +=1
+                    d['совершенный вид']+=1
             ve = i['analysis'][0]['gr'].split(',')
             for ver in ve:
                 res = re.search('пе=',ver)
                 if res:
                     per+=1
+                    d['непереходные глаголы']+=1
                 res2 = re.search('нп=',ver)
                 if res2:
                     neper+=1
-                
+                    d['переходные глаголы']+=1
+
     part_verbs=count/j
-    return 'количество глаголов:{}, доля глаголов в тексте:{}, количество несов вида:{}, количество сов вида:{}, количество переходных:{}, количество непереходных:{}'.format(j, part_verbs, nesov, sov, per, neper)
-    
+    d['часть глаголов в тексте'] = part_verbs
+    results = 'количество глаголов:{}, доля глаголов в тексте:{}, количество несов вида:{}, количество сов вида:{}, количество переходных:{}, количество непереходных:{}'.format(j, part_verbs, nesov, sov, per, neper)
+    return results, d
+
+def vk_api(method, **kwargs):
+    api_request = 'https://api.vk.com/method/'+method + '?'
+    api_request += '&'.join(['{}={}'.format(key, kwargs[key]) for key in kwargs])
+    return json.loads(requests.get(api_request).text)
 
 
-@app.route('/', methods=['get', 'post'])
-def index():
+def count_followers(group):
+    users = []
+    j = 0
+
+    result = vk_api('groups.getMembers', group_id=group)
+    members_count = result['response']['count']
+    users += result['response']["users"]
+
+    while len(users) < members_count:
+        result = vk_api('groups.getMembers', group_id=group, offset=len(users))
+        users += result['response']["users"]
+
+    for i in users:
+        j +=1
+
+    return j
+
+def get_followers(group):
+    users = []
+
+    result = vk_api('groups.getMembers', group_id=group)
+    members_count = result['response']['count']
+    users += result['response']["users"]
+
+    while len(users) < members_count:
+        result = vk_api('groups.getMembers', group_id=group, offset=len(users))
+        users += result['response']["users"]
+
+    return users
+
+def compare(group1, group2):
+    us1 = get_followers(group1)
+    us2 = get_followers(group2)
+    common = []
+    for i in us1:
+        if i in us2:
+            common.append(i)
+    for i2 in us2:
+        if i2 in us1:
+            if i2 not in common:
+                common.append(i2)
+
+    return common
+
+@app.route('/verbs', methods=['get', 'post'])
+def verbs():
     if request.form:
         text = request.form['text']
-        result = add_POS(text)
-        return render_template('index_page.html', input=text, text=result)
-    return render_template('index_page.html')
+        results, d = add_POS(text)
+        return render_template('mystem_page.html', input=text, text=results, data=d)
+    return render_template('mystem_page.html', data={})
+
+@app.route('/common', methods=['get', 'post'])
+def common():
+    if request.form:
+        group_id1 = request.form['group_id1']
+        group_id2 = request.form['group_id2']
+        num1 = count_followers(group_id1)
+        num2 = count_followers(group_id2)
+        comm = len(compare(group_id1, group_id2))
+        return render_template('common.html', **locals())
+    return render_template('common.html')
+
+
+@app.route('/', methods=['get'])
+def index():
+    return render_template('index.html')
+
 
 
 if __name__ == '__main__':
