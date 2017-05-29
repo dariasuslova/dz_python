@@ -1,0 +1,24 @@
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Корпус</title>
+</head>
+<body>
+<a href="/">На главную.</a>
+	<form method='post'>
+		<h1>Введите слово или его основу</h1>
+		<input type="text" name="slovo">
+		<br>
+		<input type="submit" value="Поиск по корпусу">
+	</form>
+
+    {%if slovo%}
+		<h1>{{slovo}}</h1>
+		<h1>Все предложения со словом: </h1>
+		<ul>{{ results }}</ul>
+		<h1>Все коллокации со словом: </h1>
+		<ul>{{ results2 }}</ul>
+    {%endif%}
+
+</body>
+</html>
