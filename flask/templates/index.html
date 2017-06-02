@@ -3,19 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Мой сайт</title>
-	<style>
-		.pos {vertical-align: sub; color: blue; font-size: 70%;}
-		.result {font-size: 24px;}
-	</style>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<link href="cover.css" rel="stylesheet">
 </head>
 <body>
-	<p>Этот сайт написала <b>Даша Суслова</b>.</p>
-    <p>Исходный код к этому сайту находится тут - <b><a href="https://github.com/dariasuslova/dz_python/tree/master/flask">https://github.com/dariasuslova/dz_python/tree/master/flask</a></b>.</p>
-    <p>На этом сайте можно делать разные вещи:</p>
-    <ul>
-        <li><a href="/verbs">Получить сведения о глаголах в тексте</a></li>
-        <li><a href="/common">Получить количество участников открытых групп ВК </a></li>
-    </ul>
+    <div class="site-wrapper">
 
+      <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+			<div class="inner cover">
+				<h2 class="cover-heading">Этот сайт написала <b>Даша Суслова</b>.</h2>
+				<p class="lead">Исходный код к этому сайту находится тут - <b><a href="https://github.com/dariasuslova/dz_python/tree/master/flask" class="btn btn-lg btn-default">GitHub</a></b>.</p>
+				<p class="lead">На этом сайте можно делать разные вещи:</p>
+					<a href="/verbs" class="btn btn-lg btn-default">Получить сведения о глаголах в тексте</a>
+					<a href="/common" class="btn btn-lg btn-default">Получить количество участников открытых групп ВК </a>
+					<a href="/corpora" class="btn btn-lg btn-default">Поискать по корпусу переводов песен </a>
+			</div>
+		</div>
+	</div>
+  </div>
 </body>
 </html>

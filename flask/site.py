@@ -108,16 +108,16 @@ def compare(group1, group2):
 
     return common
 
-def corpora(slovo):
+def cor(slovo):
     my_sent_tokenizer = nltk.RegexpTokenizer('[^.!?]+')
-    my_corpus = nltk.corpus.PlaintextCorpusReader('.\corpora_songs', '.*\.txt', sent_tokenizer=my_sent_tokenizer)
+    my_corpus = nltk.corpus.PlaintextCorpusReader('/home/hsepython2017/mysite/corpora_songs', '.*\.txt', sent_tokenizer=my_sent_tokenizer)
     stemmer = SnowballStemmer("russian")
     sentenses=my_corpus.sents()
     res = ''
     res2 = ''
-    for s in sentenses: 
+    for s in sentenses:
         if slovo in s:
-            res +=str(s)+'\n' 
+            res +=str(s)+'\n'
         elif slovo in [stemmer.stem(t) for t in s]:
             res +=str(s)+'\n'
     bigram_measures = nltk.collocations.BigramAssocMeasures()
@@ -130,11 +130,11 @@ def corpora(slovo):
     return res, res2
 
 @app.route('/corpora', methods=['get', 'post'])
-def common():
+def corpora():
     if request.form:
         slovo = request.form['slovo']
-        results, results2 = corpora(slovo)
-        return render_template('corpora.html', **locals())
+        results, results2 = cor(slovo)
+        return render_template('corpora.html', slovo=slovo, results=results, results2=results2)
     return render_template('corpora.html')
 
 @app.route('/verbs', methods=['get', 'post'])

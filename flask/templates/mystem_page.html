@@ -2,10 +2,18 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Части речи слов</title>
-    	<style>
-		.result {font-size: 24px;}
-	</style>
+	<title>Части речи слов</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<link href="cover.css" rel="stylesheet">
+    
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load('current', {'packages':['corechart'], 'language': 'ru'});
@@ -31,19 +39,26 @@
     </script>
 </head>
 <body>
-    <a href="/">На главную.</a>
-    <form method='post'>
-        <h1>Ваш текст:</h1>
-        <textarea rows="4" cols="50" name="text">{{ input }}</textarea>
-        <br>
-        <input type="submit" value="Разобрать">
-    </form>
+ <div class="site-wrapper">
+  <div class="site-wrapper-inner">
+    <div class="cover-container">
+	 <div class="inner cover">
+      <a href="/">На главную.</a>
+      <form method='post'>
+          <h2>Ваш текст:</h2>
+          <textarea rows="4" cols="50" name="text">{{ input }}</textarea>
+          <br>
+          <input type="submit" value="Разобрать" class="btn btn-primary">
+      </form>
 
-    {% if text %}
-    <div id="chart_div"></div>
-        <h1>Информация о глаголах:</h1>
-        <p class="result"> {{ text | safe}}</p>
-    {% endif %}
-
+       {% if text %}
+       <div id="chart_div"></div>
+           <h1>Информация о глаголах:</h1>
+           <p class="result"> {{ text | safe}}</p>
+       {% endif %}
+	 </div>
+	</div>
+  </div>
+ </div>
 </body>
 </html>
