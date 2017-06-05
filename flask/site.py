@@ -25,6 +25,7 @@ def add_POS(text):
     per=0
     neper=0
     d = defaultdict(int)
+    lexemes=''
     for i in ana:
         result += i['text']
         if i['text'].strip() and 'analysis' in i and i['analysis']:
@@ -53,9 +54,12 @@ def add_POS(text):
                     neper+=1
                     d['переходные глаголы']+=1
 
+            if i['analysis'][0]['gr'][0] == 'V':
+                lexemes+=i['analysis'][0]['lex']+';'
+
     part_verbs=count/j
     d['часть глаголов в тексте'] = part_verbs
-    results = 'количество глаголов:{}, доля глаголов в тексте:{}, количество несов вида:{}, количество сов вида:{}, количество переходных:{}, количество непереходных:{}'.format(j, part_verbs, nesov, sov, per, neper)
+    results = 'количество глаголов:{}, доля глаголов в тексте:{}, количество несов вида:{}, количество сов вида:{}, количество переходных:{}, количество непереходных:{}, лексемы:{}'.format(j, part_verbs, nesov, sov, per, neper, lexemes)
     return results, d
 
 def vk_api(method, **kwargs):
